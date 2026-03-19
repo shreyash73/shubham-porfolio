@@ -68,12 +68,15 @@ const initCoverflow = () => {
   let currentIndex = 2;
 
   const layout = () => {
+    const isMobile = window.innerWidth <= 768;
+    const baseOffset = isMobile ? 70 : 25; // Spacing in VWs
+
     items.forEach((item, index) => {
       const offset = index - currentIndex;
       const zIndex = 100 - Math.abs(offset);
-      const scale = offset === 0 ? 1 : 0.85;
-      const baseTransl = offset * 25; // vw
-      const tweak = offset === 0 ? 0 : (offset > 0 ? -10 : 10);
+      const scale = offset === 0 ? 1 : (isMobile ? 0.9 : 0.85);
+      const baseTransl = offset * baseOffset; // vw
+      const tweak = offset === 0 ? 0 : (offset > 0 ? (isMobile ? -20 : -10) : (isMobile ? 20 : 10));
       const translateX = baseTransl + tweak;
       
       gsap.to(item, {
@@ -177,8 +180,30 @@ const initScrollAnimations = () => {
   });
 };
 
+// Mobile Menu Logic
+const setupMobileMenu = () => {
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  const overlay = document.querySelector('.mobile-nav-overlay');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+  
+  if (menuBtn && overlay) {
+    menuBtn.addEventListener('click', () => {
+      menuBtn.classList.toggle('open');
+      overlay.classList.toggle('open');
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuBtn.classList.remove('open');
+        overlay.classList.remove('open');
+      });
+    });
+  }
+};
+
 // Init
 document.addEventListener('DOMContentLoaded', () => {
+  setupMobileMenu();
   setupCursor();
   animateHero();
   initCoverflow();
