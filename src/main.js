@@ -138,7 +138,26 @@ const initScrollAnimations = () => {
       }
     });
   });
-
+  // Reels Slider Controls
+  const reelsSlideshow = document.querySelector('.reels-slideshow');
+  const prevBtnReels = document.querySelector('.prev-btn-reels');
+  const nextBtnReels = document.querySelector('.next-btn-reels');
+  if (reelsSlideshow && prevBtnReels && nextBtnReels) {
+    nextBtnReels.addEventListener('click', () => {
+      const slide = reelsSlideshow.querySelector('.reels-slide');
+      if(slide) {
+        const slideWidth = slide.offsetWidth + (window.innerWidth * 0.02);
+        reelsSlideshow.scrollBy({ left: slideWidth, behavior: 'smooth' });
+      }
+    });
+    prevBtnReels.addEventListener('click', () => {
+      const slide = reelsSlideshow.querySelector('.reels-slide');
+      if(slide) {
+        const slideWidth = slide.offsetWidth + (window.innerWidth * 0.02);
+        reelsSlideshow.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+      }
+    });
+  }
 
   // Cinematic About Reveal Sequence
   const aboutTextEl = document.querySelector('.about-reveal-text');
