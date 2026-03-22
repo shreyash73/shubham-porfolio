@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/shubham-porfolio/assets/main-yrqAwO9f.js"></script>
-    <link rel="stylesheet" crossorigin href="/shubham-porfolio/assets/main-DrR27v0b.css">
+    <script type="module" crossorigin src="/shubham-porfolio/assets/main-LEPI1DZM.js"></script>
+    <link rel="stylesheet" crossorigin href="/shubham-porfolio/assets/main-CCopbg4L.css">
   </head>
   <body>
     <!-- Custom Cursor -->
@@ -20,7 +20,7 @@
       <div class="navbar-glass">
         <a href="index.html" class="logo" style="text-decoration:none; color:inherit;">S.</a>
         <ul class="nav-links">
-          <li><a href="index.html#films">Work</a></li>
+          <li><a href="work.html">Work</a></li>
           <li><a href="about.html">Studio</a></li>
           <li><a href="index.html#contact">Contact</a></li>
         </ul>
@@ -35,7 +35,7 @@
     <!-- Mobile Nav Overlay -->
     <div class="mobile-nav-overlay">
       <ul class="mobile-nav-links">
-        <li><a href="index.html#films" class="mobile-link">Work</a></li>
+        <li><a href="work.html" class="mobile-link">Work</a></li>
         <li><a href="about.html" class="mobile-link">Studio</a></li>
         <li><a href="index.html#contact" class="mobile-link">Contact</a></li>
       </ul>
@@ -50,7 +50,7 @@
         <div class="hero-content">
           <h1 class="hero-title">
             <div class="line-wrap"><span class="reveal-text">Powering the <span class="italic-serif">next</span></span></div>
-            <div class="line-wrap"><span class="reveal-text">generation of <span class="italic-serif">visuals.</span></span></div>
+            <div class="line-wrap"><span class="reveal-text">generation of <span class="italic-serif hero-visuals-wrapper">visuals<svg class="hero-circle" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M10,50 C10,10 190,10 190,50 C190,90 10,90 10,50 C10,30 30,20 50,15" /></svg>.</span></span></div>
           </h1>
           <p class="hero-subtitle">We partner with forward-thinking brands shaping the future of cinema and creative direction.</p>
         </div>
@@ -79,13 +79,7 @@
           <h2 class="gallery-title">My Visual Diary</h2>
           <p class="gallery-desc">See the world through my lens:<br>adventures in photos and videos</p>
 
-          <div class="tag-filters">
-            <button class="tag-btn active">All</button>
-            <button class="tag-btn">Commercials</button>
-            <button class="tag-btn">Documentaries</button>
-            <button class="tag-btn">Short Films</button>
-            <button class="tag-btn">View More &rarr;</button>
-          </div>
+          <!-- Simplified for homepage: no filters, 6 items -->
 
           <div class="coverflow-container">
              <div class="coverflow-item">
@@ -103,6 +97,9 @@
              <div class="coverflow-item">
                <div class="item-img" style="background-image: url('/shubham-porfolio/about.png')"></div>
              </div>
+             <div class="coverflow-item">
+               <div class="item-img" style="background-image: url('/shubham-porfolio/film2.png')"></div>
+             </div>
           </div>
 
           <div class="coverflow-controls">
@@ -112,34 +109,58 @@
         </div>
       </section>
 
-      <section id="reels" class="reels-section section">
-        <div class="container">
-          <h2 class="section-title">REELS.</h2>
-          <div class="reels-gallery">
-             <div class="reel-card">
-               <div class="reel-image" style="background-image: url('https://images.unsplash.com/photo-1518118014371-eea75ad81ca4?w=400&h=700&fit=crop&q=80')"></div>
-               <div class="play-btn-overlay">
-                 <div class="triangle"></div>
-               </div>
-             </div>
-             <div class="reel-card mt-5">
-               <div class="reel-image" style="background-image: url('https://images.unsplash.com/photo-1522869635100-9f4c5e86faa3?w=400&h=700&fit=crop&q=80')"></div>
-               <div class="play-btn-overlay">
-                 <div class="triangle"></div>
-               </div>
-             </div>
-             <div class="reel-card">
-               <div class="reel-image" style="background-image: url('https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=400&h=700&fit=crop&q=80')"></div>
-               <div class="play-btn-overlay">
-                 <div class="triangle"></div>
-               </div>
-             </div>
-             <div class="reel-card mt-5">
-               <div class="reel-image" style="background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&h=700&fit=crop&q=80')"></div>
-               <div class="play-btn-overlay">
-                 <div class="triangle"></div>
-               </div>
-             </div>
+      <section id="reels" class="reels-experimental-section section">
+        <div class="reels-bg-glow"></div>
+        
+        <div class="reels-header">
+          <h2 class="reels-title">REELS<span class="punct">.</span></h2>
+          <p class="reels-subtitle">Short-form stories built for attention.</p>
+          <a href="#" class="view-all-cta">View Full Reel</a>
+        </div>
+
+        <div class="reels-canvas">
+          <!-- Center Dominant -->
+          <div class="canvas-reel reel-hero" data-speed="0.8">
+            <div class="reel-inner">
+              <div class="reel-video-still" style="background-image: url('film1.png');"></div>
+              <div class="reel-meta">
+                <h4>Nike Air</h4>
+                <p>Campaign</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Floating 1 -->
+          <div class="canvas-reel reel-float-1" data-speed="1.2">
+            <div class="reel-inner">
+              <div class="reel-video-still" style="background-image: url('film2.png');"></div>
+              <div class="reel-meta">
+                <h4>A24 Promo</h4>
+                <p>Teaser</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating 2 -->
+          <div class="canvas-reel reel-float-2" data-speed="0.9">
+            <div class="reel-inner">
+              <div class="reel-video-still" style="background-image: url('about.png');"></div>
+              <div class="reel-meta">
+                <h4>Vogue India</h4>
+                <p>Editorial</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Floating 3 -->
+          <div class="canvas-reel reel-float-3" data-speed="1.5">
+            <div class="reel-inner">
+              <div class="reel-video-still" style="background-image: url('film1.png');"></div>
+              <div class="reel-meta">
+                <h4>Travis Scott</h4>
+                <p>Music Video</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
