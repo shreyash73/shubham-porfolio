@@ -486,17 +486,20 @@ h1, h2, h3, h4, h5, h6 {
 .reels-split-container {
   display: flex;
   align-items: center;
-  gap: 5vw;
+  gap: 3vw;
+  max-width: 95vw; /* Expand massively past the 1200px default limit */
+  width: 100%;
 }
 
 .reels-split-left {
-  flex: 0 0 35%;
+  flex: 0 0 20%;
+  margin-left: 2vw; /* Adjust left margin inside massive container */
   z-index: 10;
 }
 
 .reels-title {
   font-family: var(--font-display);
-  font-size: 6vw;
+  font-size: 3.5vw; /* Smaller text */
   line-height: 0.9;
   font-weight: 600;
   letter-spacing: -2px;
@@ -528,29 +531,35 @@ h1, h2, h3, h4, h5, h6 {
 .reels-slideshow {
   flex: 1;
   display: flex;
+  align-items: center; /* Prevent flex-stretch from ruining aspect ratio */
   gap: 2vw;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 2rem; /* Give hover room */
+  padding-top: 4rem; /* Generous room for glow shadow */
+  padding-bottom: 4rem; /* Generous room for glow shadow */
   scroll-behavior: smooth;
 }
 .reels-slideshow::-webkit-scrollbar { display: none; }
 
 .reels-slide {
   flex: 0 0 calc(33.333% - 1.333vw);
-  aspect-ratio: 9 / 16;
+  height: auto;
+  aspect-ratio: 9 / 16 !important; /* Force vertical 9:16 format */
   scroll-snap-align: start;
   position: relative;
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  transition: transform 0.4s ease;
+  box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 10px rgba(147, 51, 234, 0.1);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.4s ease;
 }
 .reels-slide:hover {
   transform: translateY(-10px);
+  box-shadow: 0 0 50px rgba(147, 51, 234, 0.5);
+  border-color: rgba(147, 51, 234, 0.8);
 }
 
 .reel-video-still {
