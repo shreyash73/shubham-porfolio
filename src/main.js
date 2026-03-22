@@ -32,6 +32,12 @@ const setupCursor = () => {
     link.addEventListener('mouseenter', () => cursorOutline.classList.add('hover-state'));
     link.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover-state'));
   });
+
+  // Adding Custom Play Icon Cursor on Canvas Reels
+  document.querySelectorAll('.canvas-reel').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering-reel'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-reel'));
+  });
 };
 
 // Hero Entrance Animations
@@ -50,6 +56,11 @@ const animateHero = () => {
     duration: 1,
     ease: 'power2.out'
   }, "-=1")
+  .to('.hero-circle path', {
+    strokeDashoffset: 0,
+    duration: 1.5,
+    ease: 'power2.inOut'
+  }, "-=0.5")
   .to('.scroll-indicator', {
     opacity: 1,
     duration: 1,
@@ -133,20 +144,25 @@ const initScrollAnimations = () => {
     });
   });
 
-  // Reels Gallery Stagger
-  gsap.fromTo('.reel-card', {
-    y: 100,
-    opacity: 0
-  }, {
-    y: 0,
-    opacity: 1,
-    duration: 0.8,
-    stagger: 0.1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.reels-gallery',
-      start: 'top 80%',
-    }
+  // Experimental Reels Parallax
+  let mm = gsap.matchMedia();
+  mm.add("(min-width: 769px)", () => {
+    gsap.utils.toArray('.canvas-reel').forEach(reel => {
+      const speed = reel.getAttribute('data-speed');
+      gsap.fromTo(reel, 
+        { y: 150 }, 
+        {
+          y: () => (1 - parseFloat(speed)) * (window.innerHeight * 0.8),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.reels-experimental-section',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1
+          }
+        }
+      );
+    });
   });
 
   // About Section Parallax
