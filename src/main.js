@@ -165,17 +165,46 @@ const initScrollAnimations = () => {
     });
   });
 
-  // About Section Parallax
-  gsap.to('.about-image', {
-    y: '15%',
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '.about-image-wrapper',
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: true
+  // Cinematic About Reveal Sequence
+  const aboutTextEl = document.querySelector('.about-reveal-text');
+  if (aboutTextEl) {
+    // Custom robust word-splitter preserving nested span tags
+    const wrapWords = (node) => {
+      let html = '';
+      node.childNodes.forEach(child => {
+        if (child.nodeType === 3) { // Text Node
+          const words = child.nodeValue.split(/\s+/).filter(w => w.trim() !== '');
+          words.forEach(word => {
+            html += `<span class="word">${word}</span> `;
+          });
+        } else if (child.nodeType === 1) { // Element Node
+          html += `<${child.tagName.toLowerCase()} class="${child.className}">`;
+          html += wrapWords(child);
+          html += `</${child.tagName.toLowerCase()}> `;
+        }
+      });
+      return html;
+    };
+    
+    if (!aboutTextEl.classList.contains('is-split')) {
+      aboutTextEl.innerHTML = wrapWords(aboutTextEl);
+      aboutTextEl.classList.add('is-split');
     }
-  });
+
+    gsap.to('.about-reveal-text .word', {
+      opacity: 1,
+      filter: 'blur(0px)',
+      y: 0,
+      stagger: 0.1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.about-reveal-section',
+        start: 'top 50%',
+        end: 'bottom 90%',
+        scrub: 1.2
+      }
+    });
+  }
 
   // Timeline Animation
   gsap.utils.toArray('.timeline-anim').forEach((node) => {
