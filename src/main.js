@@ -33,11 +33,6 @@ const setupCursor = () => {
     link.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover-state'));
   });
 
-  // Adding Custom Play Icon Cursor on Canvas Reels
-  document.querySelectorAll('.canvas-reel').forEach(el => {
-    el.addEventListener('mouseenter', () => document.body.classList.add('hovering-reel'));
-    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-reel'));
-  });
 };
 
 // Hero Entrance Animations
@@ -144,26 +139,6 @@ const initScrollAnimations = () => {
     });
   });
 
-  // Experimental Reels Parallax
-  let mm = gsap.matchMedia();
-  mm.add("(min-width: 769px)", () => {
-    gsap.utils.toArray('.canvas-reel').forEach(reel => {
-      const speed = reel.getAttribute('data-speed');
-      gsap.fromTo(reel, 
-        { y: 150 }, 
-        {
-          y: () => (1 - parseFloat(speed)) * (window.innerHeight * 0.8),
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '.reels-experimental-section',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1
-          }
-        }
-      );
-    });
-  });
 
   // Cinematic About Reveal Sequence
   const aboutTextEl = document.querySelector('.about-reveal-text');

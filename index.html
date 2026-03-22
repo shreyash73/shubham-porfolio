@@ -63,11 +63,23 @@
           <p class="brands-title">Trusted by innovative brands worldwide</p>
           <div class="brands-marquee">
             <div class="marquee-track">
-              <!-- Duplicated items for infinite scroll tick -->
-              <span>NIKE</span><span>APPLE</span><span>NETFLIX</span><span>PORSCHE</span><span>SONY</span><span>HBO</span>
-              <span>NIKE</span><span>APPLE</span><span>NETFLIX</span><span>PORSCHE</span><span>SONY</span><span>HBO</span>
+              <div class="marquee-group">
+                <span>NIKE</span><span>APPLE</span><span>NETFLIX</span><span>PORSCHE</span><span>SONY</span><span>HBO</span>
+              </div>
+              <div class="marquee-group" aria-hidden="true">
+                <span>NIKE</span><span>APPLE</span><span>NETFLIX</span><span>PORSCHE</span><span>SONY</span><span>HBO</span>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="about-reveal" class="about-reveal-section section">
+        <div class="about-reveal-bg"></div>
+        <div class="container about-reveal-container">
+           <h2 class="about-reveal-text">
+              I'm a versatile designer who partners with founders to turn ideas into <span class="reveal-accent">real products.</span> I focus on clear interfaces, sharp decisions, and fast execution.
+           </h2>
         </div>
       </section>
 
@@ -107,41 +119,30 @@
         </div>
       </section>
 
-      <section id="reels" class="reels-experimental-section section">
-        <div class="reels-bg-glow"></div>
-        
-        <div class="reels-header">
-          <h2 class="reels-title">REELS<span class="punct">.</span></h2>
-          <p class="reels-subtitle">Short-form stories built for attention.</p>
-          <a href="#" class="view-all-cta">View Full Reel</a>
-        </div>
-
-        <div class="reels-canvas">
-          <!-- Center Dominant -->
-          <div class="canvas-reel reel-hero" data-speed="0.8">
-            <div class="reel-inner">
+      <section id="reels" class="reels-split-section section">
+        <div class="container reels-split-container">
+          <div class="reels-split-left">
+            <h2 class="reels-title">REELS<span class="punct">.</span></h2>
+            <p class="reels-subtitle">Short-form stories built for attention.</p>
+            <br>
+            <a href="#" class="view-all-cta">View Full Reel</a>
+          </div>
+          <div class="reels-split-right reels-slideshow">
+            <div class="reels-slide">
               <div class="reel-video-still" style="background-image: url('film1.png');"></div>
               <div class="reel-meta">
                 <h4>Nike Air</h4>
                 <p>Campaign</p>
               </div>
             </div>
-          </div>
-          
-          <!-- Floating 1 -->
-          <div class="canvas-reel reel-float-1" data-speed="1.2">
-            <div class="reel-inner">
+            <div class="reels-slide">
               <div class="reel-video-still" style="background-image: url('film2.png');"></div>
               <div class="reel-meta">
                 <h4>A24 Promo</h4>
                 <p>Teaser</p>
               </div>
             </div>
-          </div>
-
-          <!-- Floating 2 -->
-          <div class="canvas-reel reel-float-2" data-speed="0.9">
-            <div class="reel-inner">
+            <div class="reels-slide">
               <div class="reel-video-still" style="background-image: url('about.png');"></div>
               <div class="reel-meta">
                 <h4>Vogue India</h4>
@@ -149,28 +150,9 @@
               </div>
             </div>
           </div>
-          
-          <!-- Floating 3 -->
-          <div class="canvas-reel reel-float-3" data-speed="1.5">
-            <div class="reel-inner">
-              <div class="reel-video-still" style="background-image: url('film1.png');"></div>
-              <div class="reel-meta">
-                <h4>Travis Scott</h4>
-                <p>Music Video</p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
-      <section id="about-reveal" class="about-reveal-section section">
-        <div class="about-reveal-bg"></div>
-        <div class="container about-reveal-container">
-           <h2 class="about-reveal-text">
-              I'm a versatile designer who partners with founders to turn ideas into <span class="reveal-accent">real products.</span> I focus on clear interfaces, sharp decisions, and fast execution.
-           </h2>
-        </div>
-      </section>
 
       <section id="contact" class="contact-section section">
         <div class="contact-grid-bg"></div>
