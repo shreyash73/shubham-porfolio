@@ -200,6 +200,48 @@ const initScrollAnimations = () => {
     });
   }
 
+  // Reels Showcase Cinematic Assembly
+  const showcaseSection = document.querySelector('.reels-showcase-section');
+  if (showcaseSection) {
+    const showcaseTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.reels-showcase-section',
+        start: 'top top',
+        end: '+=200%', // Scrub over 200vh
+        scrub: 1.5,
+        pin: true
+      }
+    });
+
+    // Animate Header
+    showcaseTl.to('.showcase-header', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    }, 0);
+
+    // Staggered Collage Assembly
+    showcaseTl.to('.collage-item', {
+      opacity: 1,
+      filter: 'blur(0px)',
+      scale: 1,
+      y: 0,
+      stagger: {
+        amount: 2.5,
+        from: 'random' // Assembles randomly for organic feel
+      },
+      duration: 2,
+      ease: 'power3.out'
+    }, 0.5);
+
+    // Subtle parallax on scroll for depth
+    showcaseTl.to('.collage-1', { y: -60, duration: 4 }, 1);
+    showcaseTl.to('.collage-2', { y: -100, duration: 4 }, 1);
+    showcaseTl.to('.collage-4', { y: -40, duration: 4 }, 1);
+    showcaseTl.to('.collage-5', { y: -80, duration: 4 }, 1);
+  }
+
   // Timeline Animation
   gsap.utils.toArray('.timeline-anim').forEach((node) => {
     gsap.fromTo(node, {

@@ -1169,6 +1169,166 @@ footer {
   .timeline-node.reverse .sub-img { left: auto; right: 0; }
 }
 
+/* Reels Showcase Section */
+.reels-showcase-section {
+  position: relative;
+  /* We'll use 300vh so scrolling scrubs the animation smoothly */
+  height: 300vh; 
+  background: var(--bg-dark);
+}
+.showcase-bg-layer {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at center, rgba(147, 51, 234, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.showcase-container {
+  /* Stick the container to viewport during the 300vh scroll */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.showcase-header {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  margin-bottom: 2rem;
+  opacity: 0; /* Animated in by JS */
+  transform: translateY(30px);
+}
+.showcase-title {
+  font-family: var(--font-display);
+  font-size: 5vw;
+  line-height: 0.9;
+  font-weight: 600;
+  letter-spacing: -2px;
+}
+.showcase-title .punct {
+  color: #a855f7;
+}
+.showcase-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 1rem;
+}
+
+.reels-collage {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  height: 60vh;
+  /* Perspective for a slight 3D feel */
+  perspective: 1000px;
+}
+
+.collage-item {
+  position: absolute;
+  aspect-ratio: 9 / 16;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 20px rgba(147, 51, 234, 0.1);
+  border: 1px solid rgba(255,255,255,0.08);
+  /* Initial state for GSAP to animate *from* */
+  opacity: 0;
+  filter: blur(20px);
+  transform: scale(0.9) translateY(50px);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  cursor: pointer;
+}
+.collage-item:hover {
+  box-shadow: 0 40px 80px rgba(147, 51, 234, 0.4);
+  border-color: rgba(147, 51, 234, 0.6);
+  z-index: 30 !important;
+}
+
+/* Asymmetrical Positioning */
+.collage-1 {
+  width: 18%;
+  left: 5%;
+  top: 10%;
+  z-index: 2;
+}
+.collage-2 {
+  width: 20%;
+  left: 20%;
+  top: 35%;
+  z-index: 3;
+}
+.collage-3.collage-main {
+  width: 25%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9); /* Base center */
+  z-index: 10;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 30px rgba(147, 51, 234, 0.2);
+}
+.collage-4 {
+  width: 22%;
+  right: 18%;
+  top: 5%;
+  z-index: 4;
+}
+.collage-5 {
+  width: 16%;
+  right: 8%;
+  top: 50%;
+  z-index: 2;
+}
+
+.collage-video-still {
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.8s ease;
+}
+.collage-item:hover .collage-video-still {
+  transform: scale(1.05);
+}
+
+.collage-meta {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+.collage-item:hover .collage-meta {
+  opacity: 1; transform: translateY(0);
+}
+.collage-meta h4 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem; margin: 0;
+}
+
+@media (max-width: 992px) {
+  .collage-1 { width: 25%; left: 5%; top: 5%; }
+  .collage-2 { width: 30%; left: 15%; top: 40%; }
+  .collage-3.collage-main { width: 35%; left: 50%; top: 50%; }
+  .collage-4 { width: 28%; right: 10%; top: 10%; }
+  .collage-5 { width: 22%; right: 5%; top: 60%; }
+}
+
+@media (max-width: 576px) {
+  .reels-showcase-section { height: 200vh; }
+  .reels-collage { height: 70vh; }
+  .showcase-title { font-size: 10vw; margin-top: -10vh; }
+  
+  .collage-1 { width: 35%; left: -5%; top: 15%; }
+  .collage-2 { width: 40%; left: 5%; top: 60%; }
+  .collage-3.collage-main { width: 50%; left: 50%; top: 50%; }
+  .collage-4 { width: 45%; right: -10%; top: 20%; }
+  .collage-5 { width: 35%; right: 5%; top: 75%; }
+}
+
 /* Mobile Menu Overlay */
 .mobile-menu-btn {
   display: none;
