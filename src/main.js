@@ -65,57 +65,155 @@ const animateHero = () => {
 
 // Coverflow Logic
 const initCoverflow = () => {
-  const items = document.querySelectorAll('.coverflow-item');
-  const prevBtn = document.querySelector('.prev-btn');
-  const nextBtn = document.querySelector('.next-btn');
-  
-  if(!items.length) return;
+  const container = document.querySelector('.coverflow-container');
+  if(!container) return;
 
-  let currentIndex = 2;
+  // Clean up any existing clones from previous filter runs
+  const existingClones = container.querySelectorAll('.is-clone');
+  existingClones.forEach(clone => clone.remove());
+
+  // Use only visible original items for the new set
+  const originalItems = Array.from(container.children).filter(item => 
+    getComputedStyle(item).display !== 'none'
+  );
+  
+  if(!originalItems.length) return;
+  
+  // Clone before and after for seamless looping
+  originalItems.forEach(item => {
+    const cloneBefore = item.cloneNode(true);
+    const cloneAfter = item.cloneNode(true);
+    cloneBefore.classList.add('is-clone');
+    cloneAfter.classList.add('is-clone');
+    container.insertBefore(cloneBefore, originalItems[0]);
+    container.appendChild(cloneAfter);
+  });
+
+  // Re-query all items (originals + new clones)
+  const items = container.querySelectorAll('.coverflow-item');
+  const totalOriginal = originalItems.length;
+  let currentIndex = totalOriginal + Math.floor(totalOriginal / 2); // Center of middle set
 
   const layout = () => {
     const isMobile = window.innerWidth <= 768;
-    const baseOffset = isMobile ? 70 : 25; // Spacing in VWs
+    const baseOffset = isMobile ? 70 : 25; 
 
     items.forEach((item, index) => {
       const offset = index - currentIndex;
-      const zIndex = 100 - Math.abs(offset);
+      const zIndex = 100 - Math.round(Math.abs(offset) * 10);
       const scale = offset === 0 ? 1 : (isMobile ? 0.9 : 0.85);
-      const baseTransl = offset * baseOffset; // vw
+      const baseTransl = offset * baseOffset;
       const tweak = offset === 0 ? 0 : (offset > 0 ? (isMobile ? -20 : -10) : (isMobile ? 20 : 10));
       const translateX = baseTransl + tweak;
       
+      const opacity = Math.abs(offset) > 2 ? 0 : 1;
+      const isVisible = Math.abs(offset) <= 2;
+
       gsap.to(item, {
         x: `${translateX}vw`,
         scale: scale,
         zIndex: zIndex,
-        opacity: Math.abs(offset) > 2 ? 0 : 1,
+        opacity: opacity,
+        pointerEvents: isVisible ? 'auto' : 'none',
         duration: 0.8,
-        ease: "power3.out"
+        ease: "power3.out",
+        overwrite: true
       });
 
-      if(offset !== 0) {
-         item.classList.add('dimmed');
-      } else {
+      if(Math.abs(offset) < 0.1) {
          item.classList.remove('dimmed');
+      } else {
+         item.classList.add('dimmed');
       }
     });
   };
 
   layout();
 
-  prevBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      layout();
-    }
-  });
+  // Navigation with looping jump logic
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
 
-  nextBtn.addEventListener('click', () => {
-    if (currentIndex < items.length - 1) {
-      currentIndex++;
-      layout();
-    }
+  if (prevBtn && !prevBtn.hasListener) {
+    prevBtn.addEventListener('click', () => {
+      const activeItems = container.querySelectorAll('.coverflow-item');
+      window.galleryIndex--;
+      updateLayout(activeItems, window.galleryIndex);
+      
+      // Infinite Jump Check
+      if (window.galleryIndex < totalOriginal) {
+        setTimeout(() => {
+          window.galleryIndex += totalOriginal;
+          updateLayout(activeItems, window.galleryIndex, true);
+        }, 800);
+      }
+    });
+    prevBtn.hasListener = true;
+  }
+
+  if (nextBtn && !nextBtn.hasListener) {
+    nextBtn.addEventListener('click', () => {
+      const activeItems = container.querySelectorAll('.coverflow-item');
+      window.galleryIndex++;
+      updateLayout(activeItems, window.galleryIndex);
+
+      if (window.galleryIndex >= totalOriginal * 2) {
+        setTimeout(() => {
+          window.galleryIndex -= totalOriginal;
+          updateLayout(activeItems, window.galleryIndex, true);
+        }, 800);
+      }
+    });
+    nextBtn.hasListener = true;
+  }
+
+  // Helper for updates
+  window.galleryIndex = currentIndex;
+  const updateLayout = (elements, idx, instant = false) => {
+    const isMobile = window.innerWidth <= 768;
+    const baseOffset = isMobile ? 70 : 25;
+    elements.forEach((item, index) => {
+      const offset = index - idx;
+      const translateX = (offset * baseOffset) + (offset === 0 ? 0 : (offset > 0 ? (isMobile ? -20 : -10) : (isMobile ? 20 : 10)));
+      gsap.to(item, {
+        x: `${translateX}vw`,
+        scale: offset === 0 ? 1 : (isMobile ? 0.9 : 0.85),
+        opacity: Math.abs(offset) > 2 ? 0 : 1,
+        duration: instant ? 0 : 0.8,
+        overwrite: true
+      });
+      if(Math.abs(offset) < 0.1) item.classList.remove('dimmed');
+      else item.classList.add('dimmed');
+    });
+  };
+};
+
+// Gallery Filter Logic
+const initGalleryFilters = () => {
+  const filterBtns = document.querySelectorAll('.tag-btn');
+  const galleryItems = document.querySelectorAll('.coverflow-container > .coverflow-item:not(.is-clone)');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Toggle Active State
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filterValue = btn.getAttribute('data-filter');
+
+      // Filter Original Items
+      galleryItems.forEach(item => {
+        const category = item.getAttribute('data-category');
+        if (filterValue === 'all' || category === filterValue) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      // Re-initialize Coverflow with new visible set
+      initCoverflow();
+    });
   });
 };
 
@@ -159,6 +257,60 @@ const initScrollAnimations = () => {
     });
   }
 
+  // Reels Showcase Cinematic Assembly (Moved up to match DOM order)
+  const showcaseSection = document.querySelector('.reels-showcase-section');
+  if (showcaseSection) {
+    // 1. Entrance Assembly Timeline (Starts before it pins)
+    const entranceTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.reels-showcase-section',
+        start: 'top 85%', // Assemble exactly as the user scrolls into it
+        end: 'top 20%',  
+        scrub: 1
+      }
+    });
+
+    // Animate Header
+    entranceTl.to('.showcase-header', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    }, 0);
+
+    // Staggered Collage Assembly
+    entranceTl.to('.collage-item', {
+      opacity: 1,
+      filter: 'blur(0px)',
+      scale: 1,
+      y: 0,
+      stagger: {
+        amount: 1.5,
+        from: 'random'
+      },
+      duration: 2,
+      ease: 'power3.out'
+    }, 0.2);
+
+    // 2. Parallax Pinning Timeline (Takes over when it reaches the top)
+    const pinTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.reels-showcase-section',
+        start: 'top top',
+        end: '+=150%', // Hold the pin for scroll length
+        scrub: 1.5,
+        pin: true,
+        anticipatePin: 1
+      }
+    });
+
+    // Parallax on scroll for depth while pinned
+    pinTl.to('.collage-1', { y: -60, duration: 4 }, 0);
+    pinTl.to('.collage-2', { y: -100, duration: 4 }, 0);
+    pinTl.to('.collage-4', { y: -40, duration: 4 }, 0);
+    pinTl.to('.collage-5', { y: -80, duration: 4 }, 0);
+  }
+
   // Cinematic About Reveal Sequence
   const aboutTextEl = document.querySelector('.about-reveal-text');
   if (aboutTextEl) {
@@ -193,54 +345,15 @@ const initScrollAnimations = () => {
       ease: 'power2.out',
       scrollTrigger: {
         trigger: '.about-reveal-section',
-        start: 'top 50%',
-        end: 'bottom 90%',
+        start: 'top 60%', // Adjusted for better trigger timing
+        end: 'bottom 80%',
         scrub: 1.2
       }
     });
   }
 
-  // Reels Showcase Cinematic Assembly
-  const showcaseSection = document.querySelector('.reels-showcase-section');
-  if (showcaseSection) {
-    const showcaseTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.reels-showcase-section',
-        start: 'top top',
-        end: '+=200%', // Scrub over 200vh
-        scrub: 1.5,
-        pin: true
-      }
-    });
-
-    // Animate Header
-    showcaseTl.to('.showcase-header', {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: 'power2.out'
-    }, 0);
-
-    // Staggered Collage Assembly
-    showcaseTl.to('.collage-item', {
-      opacity: 1,
-      filter: 'blur(0px)',
-      scale: 1,
-      y: 0,
-      stagger: {
-        amount: 2.5,
-        from: 'random' // Assembles randomly for organic feel
-      },
-      duration: 2,
-      ease: 'power3.out'
-    }, 0.5);
-
-    // Subtle parallax on scroll for depth
-    showcaseTl.to('.collage-1', { y: -60, duration: 4 }, 1);
-    showcaseTl.to('.collage-2', { y: -100, duration: 4 }, 1);
-    showcaseTl.to('.collage-4', { y: -40, duration: 4 }, 1);
-    showcaseTl.to('.collage-5', { y: -80, duration: 4 }, 1);
-  }
+  // Refresh ScrollTrigger to account for dynamic heights/pinning
+  ScrollTrigger.refresh();
 
   // Timeline Animation
   gsap.utils.toArray('.timeline-anim').forEach((node) => {
@@ -288,5 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCursor();
   animateHero();
   initCoverflow();
+  initGalleryFilters();
   initScrollAnimations();
 });
