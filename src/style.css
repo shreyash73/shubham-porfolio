@@ -1172,9 +1172,10 @@ footer {
 /* Reels Showcase Section */
 .reels-showcase-section {
   position: relative;
-  /* We'll use 300vh so scrolling scrubs the animation smoothly */
-  height: 300vh; 
+  /* Let GSAP handle the scroll distance via pinning */
+  height: 100vh; 
   background: var(--bg-dark);
+  overflow: hidden;
 }
 .showcase-bg-layer {
   position: absolute;
@@ -1183,15 +1184,13 @@ footer {
   pointer-events: none;
 }
 .showcase-container {
-  /* Stick the container to viewport during the 300vh scroll */
-  position: sticky;
-  top: 0;
+  position: relative;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 }
 
 .showcase-header {
