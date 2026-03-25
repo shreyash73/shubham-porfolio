@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/shubham-porfolio/assets/main-B8h8zkQ9.js"></script>
-    <link rel="stylesheet" crossorigin href="/shubham-porfolio/assets/main--iwUnUfx.css">
+    <script type="module" crossorigin src="/shubham-porfolio/assets/main-Cq3wi0yZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/shubham-porfolio/assets/main-Cb_Fl6p2.css">
   </head>
   <body class="work-page">
     <div class="cursor-dot"></div>
@@ -47,28 +47,45 @@
           <p class="gallery-desc">See the world through my lens:<br>adventures in photos and videos</p>
 
           <div class="tag-filters">
-            <button class="tag-btn active">All</button>
-            <button class="tag-btn">Commercials</button>
-            <button class="tag-btn">Documentaries</button>
-            <button class="tag-btn">Short Films</button>
-            <button class="tag-btn">View More &rarr;</button>
+            <button class="tag-btn active" data-filter="all">All</button>
+            <button class="tag-btn" data-filter="reels">Reels</button>
+            <button class="tag-btn" data-filter="films-shows">Films & Shows</button>
+            <button class="tag-btn" data-filter="campaigns">Campaigns</button>
+            <button class="tag-btn" data-filter="brand-films">Brand Films</button>
+            <button class="tag-btn" data-filter="podcasts">Podcasts</button>
+            <button class="tag-btn" data-filter="events">Events</button>
+            <button class="tag-btn" data-filter="documentaries">Documentaries</button>
+            <button class="tag-btn" data-filter="travel">Travel</button>
+            <button class="tag-btn" data-filter="game-shows">Game Shows</button>
           </div>
 
           <div class="coverflow-container">
-             <div class="coverflow-item">
+             <div class="coverflow-item" data-category="reels">
                <div class="item-img" style="background-image: url('/shubham-porfolio/film1.png')"></div>
              </div>
-             <div class="coverflow-item">
+             <div class="coverflow-item" data-category="films-shows">
                <div class="item-img" style="background-image: url('/shubham-porfolio/about.png')"></div>
              </div>
-             <div class="coverflow-item">
+             <div class="coverflow-item" data-category="campaigns">
                <div class="item-img" style="background-image: url('/shubham-porfolio/film2.png')"></div>
              </div>
-             <div class="coverflow-item">
+             <div class="coverflow-item" data-category="brand-films">
                <div class="item-img" style="background-image: url('/shubham-porfolio/film1.png')"></div>
              </div>
-             <div class="coverflow-item">
+             <div class="coverflow-item" data-category="podcasts">
                <div class="item-img" style="background-image: url('/shubham-porfolio/about.png')"></div>
+             </div>
+             <div class="coverflow-item" data-category="events">
+               <div class="item-img" style="background-image: url('/shubham-porfolio/film2.png')"></div>
+             </div>
+             <div class="coverflow-item" data-category="documentaries">
+               <div class="item-img" style="background-image: url('/shubham-porfolio/film1.png')"></div>
+             </div>
+             <div class="coverflow-item" data-category="travel">
+               <div class="item-img" style="background-image: url('/shubham-porfolio/about.png')"></div>
+             </div>
+             <div class="coverflow-item" data-category="game-shows">
+               <div class="item-img" style="background-image: url('/shubham-porfolio/film2.png')"></div>
              </div>
              <!-- More items can be added here -->
           </div>
@@ -76,6 +93,43 @@
           <div class="coverflow-controls">
               <button class="control-btn prev-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
               <button class="control-btn next-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="band-section section" id="band">
+        <div class="container">
+          <div class="band-header" style="text-align: center; margin-bottom: 5vh;">
+            <h3 class="gallery-subtitle">THE MUSIC</h3>
+            <h2 class="gallery-title" style="margin-bottom: 2rem;">My Band.</h2>
+            <p class="gallery-desc">Creating soundscapes and performing live music.<br>Check out our latest visual projects.</p>
+          </div>
+          
+          <div class="band-video-grid">
+            <div class="band-video-card lg-col">
+                <div class="reel-image" style="background-image: url('film1.png'); padding-bottom: 56.25%;"></div>
+                <div class="play-btn-overlay"><div class="triangle"></div></div>
+                <div class="band-meta">
+                  <h4>Echoes in the Dark</h4>
+                  <p>Official Music Video</p>
+                </div>
+            </div>
+            <div class="band-video-card">
+                <div class="reel-image" style="background-image: url('film2.png'); padding-bottom: 56.25%;"></div>
+                <div class="play-btn-overlay"><div class="triangle"></div></div>
+                <div class="band-meta">
+                  <h4>Live at The Roxy</h4>
+                  <p>Performance</p>
+                </div>
+            </div>
+            <div class="band-video-card">
+                <div class="reel-image" style="background-image: url('about.png'); padding-bottom: 56.25%;"></div>
+                <div class="play-btn-overlay"><div class="triangle"></div></div>
+                <div class="band-meta">
+                  <h4>Studio Sessions</h4>
+                  <p>Behind the Scenes</p>
+                </div>
+            </div>
           </div>
         </div>
       </section>
