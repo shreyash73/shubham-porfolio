@@ -64,7 +64,7 @@ const animateHero = () => {
 };
 
 // Coverflow Logic
-const initCoverflow = () => {
+const initCoverflow = (filterValue = 'all') => {
   const container = document.querySelector('.coverflow-container');
   if(!container) return;
 
@@ -72,34 +72,54 @@ const initCoverflow = () => {
   const existingClones = container.querySelectorAll('.is-clone');
   existingClones.forEach(clone => clone.remove());
 
-  // Use only visible original items for the new set
-  const originalItems = Array.from(container.children).filter(item => 
-    getComputedStyle(item).display !== 'none'
-  );
+  // Handle Filtering and Identify Visible Items
+  const allItems = Array.from(container.children);
+  const visibleItems = allItems.filter(item => {
+    const category = item.getAttribute('data-category');
+    const isVisible = filterValue === 'all' || category === filterValue;
+    item.style.display = isVisible ? 'block' : 'none';
+    return isVisible;
+  });
   
-  if(!originalItems.length) return;
+  if(!visibleItems.length) return;
   
   // Clone before and after for seamless looping
-  originalItems.forEach(item => {
+  const fragmentBefore = document.createDocumentFragment();
+  const fragmentAfter = document.createDocumentFragment();
+
+  visibleItems.forEach(item => {
     const cloneBefore = item.cloneNode(true);
     const cloneAfter = item.cloneNode(true);
     cloneBefore.classList.add('is-clone');
     cloneAfter.classList.add('is-clone');
-    container.insertBefore(cloneBefore, originalItems[0]);
-    container.appendChild(cloneAfter);
+    fragmentBefore.appendChild(cloneBefore);
+    fragmentAfter.appendChild(cloneAfter);
   });
 
-  // Re-query all items (originals + new clones)
-  const items = container.querySelectorAll('.coverflow-item');
-  const totalOriginal = originalItems.length;
-  let currentIndex = totalOriginal + Math.floor(totalOriginal / 2); // Center of middle set
+  container.insertBefore(fragmentBefore, visibleItems[0]);
+  container.appendChild(fragmentAfter);
 
-  const layout = () => {
+  // Re-query all visible items + new clones
+  const items = Array.from(container.querySelectorAll('.coverflow-item')).filter(item => item.style.display !== 'none');
+  const totalOriginal = visibleItems.length;
+  
+  // Update state on the container to be shared with listeners
+  container.cfState = {
+    items: items,
+    totalOriginal: totalOriginal,
+    currentIndex: totalOriginal + Math.floor(totalOriginal / 2),
+    isMoving: false
+  };
+
+  const updateLayout = (idx, instant = false) => {
+    const state = container.cfState;
+    if(!state || !state.items) return;
+
     const isMobile = window.innerWidth <= 768;
     const baseOffset = isMobile ? 70 : 25; 
-
-    items.forEach((item, index) => {
-      const offset = index - currentIndex;
+    
+    state.items.forEach((item, index) => {
+      const offset = index - idx;
       const zIndex = 100 - Math.round(Math.abs(offset) * 10);
       const scale = offset === 0 ? 1 : (isMobile ? 0.9 : 0.85);
       const baseTransl = offset * baseOffset;
@@ -115,9 +135,12 @@ const initCoverflow = () => {
         zIndex: zIndex,
         opacity: opacity,
         pointerEvents: isVisible ? 'auto' : 'none',
-        duration: 0.8,
-        ease: "power3.out",
-        overwrite: true
+        duration: instant ? 0 : 0.8,
+        ease: instant ? "none" : "power3.out",
+        overwrite: true,
+        onComplete: () => {
+          if(!instant && state) state.isMoving = false;
+        }
       });
 
       if(Math.abs(offset) < 0.1) {
@@ -128,24 +151,27 @@ const initCoverflow = () => {
     });
   };
 
-  layout();
+  // Initial Layout
+  updateLayout(container.cfState.currentIndex, true);
 
-  // Navigation with looping jump logic
+  // Navigation - Attach ONCE and use container.cfState
   const prevBtn = document.querySelector('.prev-btn');
   const nextBtn = document.querySelector('.next-btn');
 
   if (prevBtn && !prevBtn.hasListener) {
     prevBtn.addEventListener('click', () => {
-      const activeItems = container.querySelectorAll('.coverflow-item');
-      window.galleryIndex--;
-      updateLayout(activeItems, window.galleryIndex);
+      const state = container.cfState;
+      if(!state || state.isMoving) return;
+      state.isMoving = true;
+      state.currentIndex--;
+      updateLayout(state.currentIndex);
       
-      // Infinite Jump Check
-      if (window.galleryIndex < totalOriginal) {
+      if (state.currentIndex < state.totalOriginal) {
         setTimeout(() => {
-          window.galleryIndex += totalOriginal;
-          updateLayout(activeItems, window.galleryIndex, true);
-        }, 800);
+          if(!container.cfState) return;
+          container.cfState.currentIndex += container.cfState.totalOriginal;
+          updateLayout(container.cfState.currentIndex, true);
+        }, 810);
       }
     });
     prevBtn.hasListener = true;
@@ -153,66 +179,42 @@ const initCoverflow = () => {
 
   if (nextBtn && !nextBtn.hasListener) {
     nextBtn.addEventListener('click', () => {
-      const activeItems = container.querySelectorAll('.coverflow-item');
-      window.galleryIndex++;
-      updateLayout(activeItems, window.galleryIndex);
+      const state = container.cfState;
+      if(!state || state.isMoving) return;
+      state.isMoving = true;
+      state.currentIndex++;
+      updateLayout(state.currentIndex);
 
-      if (window.galleryIndex >= totalOriginal * 2) {
+      if (state.currentIndex >= state.totalOriginal * 2) {
         setTimeout(() => {
-          window.galleryIndex -= totalOriginal;
-          updateLayout(activeItems, window.galleryIndex, true);
-        }, 800);
+          if(!container.cfState) return;
+          container.cfState.currentIndex -= container.cfState.totalOriginal;
+          updateLayout(container.cfState.currentIndex, true);
+        }, 810);
       }
     });
     nextBtn.hasListener = true;
   }
 
-  // Helper for updates
-  window.galleryIndex = currentIndex;
-  const updateLayout = (elements, idx, instant = false) => {
-    const isMobile = window.innerWidth <= 768;
-    const baseOffset = isMobile ? 70 : 25;
-    elements.forEach((item, index) => {
-      const offset = index - idx;
-      const translateX = (offset * baseOffset) + (offset === 0 ? 0 : (offset > 0 ? (isMobile ? -20 : -10) : (isMobile ? 20 : 10)));
-      gsap.to(item, {
-        x: `${translateX}vw`,
-        scale: offset === 0 ? 1 : (isMobile ? 0.9 : 0.85),
-        opacity: Math.abs(offset) > 2 ? 0 : 1,
-        duration: instant ? 0 : 0.8,
-        overwrite: true
-      });
-      if(Math.abs(offset) < 0.1) item.classList.remove('dimmed');
-      else item.classList.add('dimmed');
-    });
-  };
+  // Exposed helper for filter logic
+  container.triggerLayout = () => updateLayout(container.cfState.currentIndex);
+  
+  prevBtn.hasListener = true;
+  nextBtn.hasListener = true;
 };
 
 // Gallery Filter Logic
 const initGalleryFilters = () => {
   const filterBtns = document.querySelectorAll('.tag-btn');
-  const galleryItems = document.querySelectorAll('.coverflow-container > .coverflow-item:not(.is-clone)');
+  const container = document.querySelector('.coverflow-container');
+  if(!container) return;
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Toggle Active State
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
       const filterValue = btn.getAttribute('data-filter');
-
-      // Filter Original Items
-      galleryItems.forEach(item => {
-        const category = item.getAttribute('data-category');
-        if (filterValue === 'all' || category === filterValue) {
-          item.style.display = 'block';
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      // Re-initialize Coverflow with new visible set
-      initCoverflow();
+      initCoverflow(filterValue);
     });
   });
 };
@@ -309,6 +311,7 @@ const initScrollAnimations = () => {
     pinTl.to('.collage-2', { y: -100, duration: 4 }, 0);
     pinTl.to('.collage-4', { y: -40, duration: 4 }, 0);
     pinTl.to('.collage-5', { y: -80, duration: 4 }, 0);
+    pinTl.to('.collage-6', { y: -110, duration: 4 }, 0);
   }
 
   // Cinematic About Reveal Sequence
