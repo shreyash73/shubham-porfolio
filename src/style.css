@@ -837,21 +837,14 @@ h6 {
   margin-bottom: 0.2rem;
 }
 
-.reel-meta p {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .reels-split-container {
     flex-direction: column;
     align-items: flex-start;
   }
 
   .reels-split-left {
+    width: 100% !important;
     margin-bottom: 2rem;
   }
 
@@ -860,9 +853,24 @@ h6 {
   }
 
   .reels-slide {
-    flex: 0 0 calc(80vw - 2vw);
-    /* Show mostly 1 item with a peek of the next */
+    min-width: 80vw;
+    flex: 0 0 80vw;
   }
+
+  .reels-slideshow {
+    width: 100vw;
+    margin-left: -5vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+  }
+}
+
+.reel-meta p {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Band Section Grid */
