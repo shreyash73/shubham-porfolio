@@ -1088,6 +1088,11 @@ h6 {
 @media (max-width: 768px) {
   .about-reveal-text {
     font-size: 8vw;
+    padding: 0 5vw;
+  }
+  .about-reveal-section {
+    min-height: auto;
+    padding: 15vh 0;
   }
 }
 
@@ -1757,46 +1762,49 @@ footer {
 
 @media (max-width: 576px) {
   .reels-showcase-section {
-    height: 100vh;
+    height: auto;
+    padding: 5vh 0;
   }
 
   .reels-collage {
-    height: 70vh;
+    height: 60vh;
+    margin-top: 5vh;
   }
 
   .showcase-title {
     font-size: 10vw;
-    margin-top: -10vh;
+    margin-top: 10vh;
+    padding: 0 5vw;
   }
 
   .collage-1 {
-    width: 35%;
-    left: -5%;
-    top: 15%;
+    width: 28%;
+    left: 2%;
+    top: 5%;
   }
 
   .collage-2 {
-    width: 40%;
-    left: 5%;
-    top: 60%;
+    width: 32%;
+    left: 8%;
+    top: 65%;
   }
 
   .collage-3.collage-main {
-    width: 50%;
+    width: 40%;
     left: 50%;
     top: 50%;
   }
 
   .collage-4 {
-    width: 45%;
-    right: -10%;
-    top: 20%;
+    width: 25%;
+    right: 2%;
+    top: 10%;
   }
 
   .collage-5 {
-    width: 35%;
+    width: 28%;
     right: 5%;
-    top: 75%;
+    top: 70%;
   }
 }
 
